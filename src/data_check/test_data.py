@@ -1,9 +1,17 @@
+"""
+Tests for data integrity check...
+"""
 import pandas as pd
 import numpy as np
 import scipy.stats
+import logging
 
 
 def test_column_names(data):
+    """
+    Verifying column names. Check if the expected columns are
+    in the dataset.
+    """
 
     expected_colums = [
         "id",
@@ -26,16 +34,24 @@ def test_column_names(data):
 
     these_columns = data.columns.values
 
+    logging.info("Test column names: column names expected: %s",
+                 list(expected_colums))
     # This also enforces the same order
     assert list(expected_colums) == list(these_columns)
 
 
 def test_neighborhood_names(data):
+    """
+    Check whether the dataset contains the expected list of 
+    neighborhood.
+    """
 
     known_names = ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
 
     neigh = set(data['neighbourhood_group'].unique())
 
+    logging.info("Test neighborhood names in the dataset..")
+    logging.info("Test list of neighbourhoods expected: %s", set(known_names))
     # Unordered check
     assert set(known_names) == set(neigh)
 
@@ -45,6 +61,9 @@ def test_proper_boundaries(data: pd.DataFrame):
     Test proper longitude and latitude boundaries for properties in and around NYC
     """
     idx = data['longitude'].between(-74.25, -73.50) & data['latitude'].between(40.5, 41.2)
+
+    logging.info("Test proper boundaries...")
+    logging.info("Test unexpected items are %s", np.sum(~idx))
 
     assert np.sum(~idx) == 0
 
@@ -63,3 +82,21 @@ def test_similar_neigh_distrib(data: pd.DataFrame, ref_data: pd.DataFrame, kl_th
 ########################################################
 # Implement here test_row_count and test_price_range   #
 ########################################################
+def test_row_count(data: pd.DataFrame):
+    """
+    Check the size of the dataset
+    """
+    logging.info("Test row count: expected number of rows is %s", data.shape[0])
+
+    assert 15000 < data.shape[0] < 1000000
+
+def test_price_range(data: pd.DataFrame, min_price: float, max_price: float):
+    """
+    Check the rental price falls between the range given by the user
+    """
+    logging.info("Test if rental price within a desired range of %s - %s", min_price, max_price)
+
+    count_rentals_within = data['price'].between(min_price, max_price).shape[0]
+    assert data.shape[0] == count_rentals_within
+
+
