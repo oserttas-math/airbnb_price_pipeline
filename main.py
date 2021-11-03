@@ -133,7 +133,16 @@ def go(config: DictConfig):
             # Implement here #
             ##################
 
-            pass
+            _ = mlflow.run(
+                uri=os.path.join(
+                    hydra.utils.get_original_cwd(), "components", "test_regression_model"
+                ),
+                entry_point="main",
+                parameters={
+                    "mlflow_model": config["modeling"]["output_artifact"] + ":prod",
+                    "test_dataset": "test_data.csv:latest",
+                }
+            )
 
 
 if __name__ == "__main__":
