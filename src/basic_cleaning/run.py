@@ -4,6 +4,7 @@
 """
 import argparse
 import logging
+from sys import last_value
 import wandb
 import os
 import pandas as pd
@@ -43,7 +44,20 @@ def go(args):
     idx = data_frame_raw['price'].between(MIN_PRICE,
         MAX_PRICE)
     data_frame_processed = data_frame_raw[idx].copy()
+    # Fixing the error caught when running Sample2.csv file 
+    # we need to make sure long is between -74.24 and -73.30 
+    # also lat is between 40.5 and 41.2
+    long_values = (-74.25, -73.50)
+    lat_values = (40.5, 41.2)
+    logger.info("Filtering Locational Boundaries of Lat: %s, long: %s", long_values, lat_values
+    )
+    idx_two = (
+        data_frame_processed["longitude"].between(long_values) & 
+        data_frame_processed["latitude"].between(lat_values)
+    )
 
+    data_frame_processed = data_frame_processed[idx_two].copy()
+    
     logger.info("Casting last_review Field to Datetime")
     # convert string type to datetime
     data_frame_processed['last_review'] = pd.to_datetime(
