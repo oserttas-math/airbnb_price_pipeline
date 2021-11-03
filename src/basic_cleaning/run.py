@@ -52,8 +52,8 @@ def go(args):
     logger.info("Filtering Locational Boundaries of Lat: %s, long: %s", long_values, lat_values
     )
     idx_two = (
-        data_frame_processed["longitude"].between(long_values) & 
-        data_frame_processed["latitude"].between(lat_values)
+        data_frame_processed["longitude"].between(long_values[0], long_values[1]) & 
+        data_frame_processed["latitude"].between(lat_values[0], lat_values[1])
     )
 
     data_frame_processed = data_frame_processed[idx_two].copy()
