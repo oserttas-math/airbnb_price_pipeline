@@ -4,7 +4,7 @@ time on various rental platforms. You need to estimate the typical price for a g
 on the price of similar properties. Your company receives new data in bulk every week. The model needs 
 to be retrained with the same cadence, necessitating an end-to-end pipeline that can be reused.
 
-In this project you will build such a pipeline.
+In this project you will build such a pipeline and upload the pipeline onto [Weigts&Biases](https://wandb.ai/ozkansgithub/nyc_airbnb/overview)
 
 ## Table of contents
 
@@ -33,18 +33,18 @@ In this project you will build such a pipeline.
 
 ## Preliminary steps
 ### Fork the Starter kit
-Go to [https://github.com/udacity/nd0821-c2-build-model-workflow-starter](https://github.com/udacity/nd0821-c2-build-model-workflow-starter)
+Go to [https://github.com/oserttas-math/airbnb_price_pipeline.git](https://github.com/oserttas-math/airbnb_price_pipeline.git)
 and click on `Fork` in the upper right corner. This will create a fork in your Github account, i.e., a copy of the
 repository that is under your control. Now clone the repository locally so you can start working on it:
 
 ```
-git clone https://github.com/[your github username]/nd0821-c2-build-model-workflow-starter.git
+git clone https://github.com/[your github username]/airbnb_price_pipeline.git.git
 ```
 
 and go into the repository:
 
 ```
-cd nd0821-c2-build-model-workflow-starter
+cd airbnb_price_pipeline
 ```
 Commit and push to the repository often while you make progress towards the solution. Remember 
 to add meaningful commit messages.
@@ -169,11 +169,11 @@ _ = mlflow.run(
             )
 ```
 where `config['main']['components_repository']` is set to 
-[https://github.com/udacity/nd0821-c2-build-model-workflow-starter#components](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/tree/master/components).
+[https://github.com/oserttas-math/airbnb_price_pipeline#components](https://github.com/oserttas-math/airbnb_price_pipeline/tree/master/components).
 You can see the parameters that they require by looking into their `MLproject` file:
 
-- `get_data`: downloads the data. [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/get_data/MLproject)
-- `train_val_test_split`: segrgate the data (splits the data) [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/train_val_test_split/MLproject)
+- `get_data`: downloads the data. [MLproject](https://github.com/oserttas-math/airbnb_price_pipeline/blob/master/components/get_data/MLproject)
+- `train_val_test_split`: segrgate the data (splits the data) [MLproject](https://github.com/oserttas-math/airbnb_price_pipeline/blob/master/components/train_val_test_split/MLproject)
 
 ## In case of errors
 When you make an error writing your `conda.yml` file, you might end up with an environment for the pipeline or one
@@ -436,7 +436,7 @@ Add it to the pipeline then run the pipeline. As usual, use the configuration fo
 **_HINT_**: The path to the step can
 be expressed as ``mlflow.run(f"{config['main']['components_repository']}/train_val_test_split", ...)``.
 
-You can see the parameters accepted by this step [here](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/train_val_test_split/MLproject)
+You can see the parameters accepted by this step [here](https://github.com/oserttas-math/airbnb_price_pipeline/blob/master/components/train_val_test_split/MLproject)
 
 After you execute, you will see something like:
 
@@ -503,7 +503,7 @@ Go to the artifact section of the selected job, and select the
 ### Test
 Use the provided step ``test_regression_model`` to test your production model against the
 test set. Implement the call to this component in the `main.py` file. As usual you can see the parameters in the
-corresponding [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/test_regression_model/MLproject) 
+corresponding [MLproject](https://github.com/oserttas-math/airbnb_price_pipeline/blob/master/components/test_regression_model/MLproject) 
 file. Use the artifact `random_forest_export:prod` for the parameter `mlflow_model` and the test artifact
 `test_data.csv:latest` as `test_artifact`.
 
